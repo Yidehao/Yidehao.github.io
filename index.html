@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Yide Hao, backend and AI agent engineer, MS CS at UT Austin.">
+<title>Yide Hao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow reading column; dates sit in a mono gutter like log timestamps; a single live status line is the only flourish. */
+:root {
+  --bg: #fbfbfa;
+  --fg: #16181d;
+  --muted: #5d6270;
+  --faint: #9a9eaa;
+  --rule: #e6e7eb;
+  --accent: #2443c9;
+  --live: #1f9d55;
+  --chip: #f1f2f5;
+  --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-4: clamp(2.25rem, 6vw, 3rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101216; --fg: #e9eaee; --muted: #a3a8b5; --faint: #6c7180;
+    --rule: #252832; --accent: #8fa4ff; --live: #4ade80; --chip: #1a1d24;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101216; --fg: #e9eaee; --muted: #a3a8b5; --faint: #6c7180;
+  --rule: #252832; --accent: #8fa4ff; --live: #4ade80; --chip: #1a1d24;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  padding-inline: 20px;
+  padding-block: 0;
+  margin: 0;
+}
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-block: clamp(48px, 9vw, 96px) 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; text-decoration-thickness: 1.5px; transition: text-decoration-color .15s, color .15s; }
+a:hover { color: var(--accent); text-decoration-color: currentColor; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+[hidden] { display: none !important; }
+
+/* Header */
+header { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+header .who { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+h1 { font-size: var(--step-4); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; margin: 0; text-wrap: balance; }
+.tagline { color: var(--muted); margin: 0; font-size: var(--step-1); }
+.monogram {
+  width: 88px; height: 88px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--chip); border: 1px solid var(--rule);
+  font-family: var(--font-mono); font-weight: 500; font-size: 1.5rem; color: var(--muted);
+  letter-spacing: -0.02em;
+}
+.status {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--muted);
+  width: fit-content; max-width: 100%;
+}
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); flex: none; position: relative; }
+.status .dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--live); opacity: .5; animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { transform: scale(.5); opacity: .6; } 80%, 100% { transform: scale(1.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .status .dot::after { animation: none; opacity: 0; } }
+
+.links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9375rem; }
+.links a, .links button { color: var(--muted); }
+.links a:hover { color: var(--accent); }
+.copy {
+  font: inherit; color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; text-decoration-thickness: 1.5px;
+}
+.copy:hover { color: var(--accent); text-decoration-color: currentColor; }
+.copied { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--live); }
+
+/* Sections */
+section { display: flex; flex-direction: column; gap: 18px; }
+h2 {
+  font-family: var(--font-mono); font-weight: 500; font-size: 0.8125rem;
+  letter-spacing: 0.06em; text-transform: lowercase; color: var(--faint); margin: 0;
+  display: flex; align-items: center; gap: 12px;
+}
+h2::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.bio { display: flex; flex-direction: column; gap: 14px; }
+.bio p { margin: 0; max-width: 62ch; }
+.bio strong { font-weight: 600; }
+
+.entries { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 26px; }
+.entry { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 20px; }
+.when { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--faint); padding-top: 3px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.what { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.role { font-weight: 600; margin: 0; }
+.role .org { font-weight: 400; color: var(--muted); }
+.desc { margin: 0; color: var(--muted); max-width: 60ch; }
+.meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--faint); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { font-family: var(--font-mono); font-size: 0.71875rem; color: var(--muted); background: var(--chip); border: 1px solid var(--rule); border-radius: 999px; padding: 1px 9px; }
+
+.hobbies { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0; padding: 0; list-style: none; color: var(--muted); }
+.hobbies li { display: flex; align-items: center; gap: 8px; }
+
+footer { border-top: 1px solid var(--rule); padding-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: 0.875rem; color: var(--faint); }
+footer a { color: var(--faint); }
+
+@media (max-width: 560px) {
+  header { grid-template-columns: 1fr; }
+  .monogram { order: -1; width: 64px; height: 64px; font-size: 1.125rem; }
+  .entry { grid-template-columns: 1fr; }
+  .when { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header>
+    <div class="who">
+      <h1>Yide Hao</h1>
+      <p class="tagline">Backend and AI agent engineer · MS CS at UT Austin</p>
+      <span class="status"><span class="dot" aria-hidden="true"></span>open to Summer 2027 SWE internships</span>
+      <nav class="links" aria-label="Elsewhere">
+        <a href="https://github.com/Yidehao" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/yide-hao-307414247/" target="_blank" rel="noopener">LinkedIn</a>
+        <span><button class="copy" id="copy-email" type="button">yh27357@eid.utexas.edu</button> <span class="copied" id="copied" hidden>copied</span></span>
+      </nav>
+    </div>
+    <div class="monogram" aria-hidden="true">YH</div>
+  </header>
+
+  <section aria-labelledby="about-h">
+    <h2 id="about-h">about</h2>
+    <div class="bio">
+      <p>I'm a master's student in Computer Science at <strong>UT Austin</strong>. I like building backend systems that stay fast under load, and AI agents that can actually get work done.</p>
+      <p>This summer I built a video streaming platform on Spring Boot microservices at InnovaAI. On the side I'm building an AI interviewer: an agent that plans its own questions and calls tools through an MCP server. Before that I did clinical RAG research at UT's AI Health Lab, which became a NeurIPS 2025 workshop paper.</p>
+      <p>What I enjoy most is taking an idea all the way from system design to something real people use.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="work-h">
+    <h2 id="work-h">work</h2>
+    <ol class="entries">
+      <li class="entry">
+        <span class="when">2026.05 → 2026.08</span>
+        <div class="what">
+          <p class="role">Software Engineer Intern <span class="org">· InnovaAI Tech</span></p>
+          <p class="desc">Built an internal video streaming platform for all hands talks: chunked resumable uploads, transcoding, search, and live danmaku comments, as Spring Boot microservices behind a gateway.</p>
+          <div class="tags"><span class="tag">Spring Cloud</span><span class="tag">RocketMQ</span><span class="tag">Redis</span><span class="tag">Elasticsearch</span><span class="tag">MySQL</span></div>
+          <span class="meta">San Francisco, CA</span>
+        </div>
+      </li>
+      <li class="entry">
+        <span class="when">2025.07 → 2026.05</span>
+        <div class="what">
+          <p class="role">Research Assistant <span class="org">· <a href="https://aihealth.ischool.utexas.edu/" target="_blank" rel="noopener">AI Health Lab, UT Austin</a></span></p>
+          <p class="desc">Designed CARE-RAG, a clinical RAG benchmark testing 20 LLMs under relevant, noisy, and misleading retrieval. Accepted at GenAI for Health, NeurIPS 2025.</p>
+          <div class="tags"><span class="tag">RAG</span><span class="tag">FAISS</span><span class="tag">LLM evaluation</span></div>
+          <span class="meta">Austin, TX</span>
+        </div>
+      </li>
+      <li class="entry">
+        <span class="when">2025.01 → 2025.04</span>
+        <div class="what">
+          <p class="role">Deep Learning Research <span class="org">· <a href="https://theaulab.github.io/" target="_blank" rel="noopener">Au Lab, University of Michigan</a></span></p>
+          <p class="desc">Built a PyTorch BiLSTM over Evo2 genomic embeddings to annotate transposable elements base by base.</p>
+          <div class="tags"><span class="tag">PyTorch</span><span class="tag">Evo2</span></div>
+          <span class="meta">Ann Arbor, MI</span>
+        </div>
+      </li>
+      <li class="entry">
+        <span class="when">2024.10 → 2024.12</span>
+        <div class="what">
+          <p class="role">Software Engineer Intern <span class="org">· YesTech Corp</span></p>
+          <p class="desc">Built the invite and onboarding flow for a close friend check in app, with DynamoDB conditional writes so each invite code is redeemed exactly once.</p>
+          <div class="tags"><span class="tag">DynamoDB</span><span class="tag">S3</span><span class="tag">Athena</span></div>
+          <span class="meta">New York, NY</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="projects-h">
+    <h2 id="projects-h">projects</h2>
+    <ol class="entries">
+      <li class="entry">
+        <span class="when">2024.12 → now</span>
+        <div class="what">
+          <p class="role"><a href="https://github.com/Yidehao/ai-digital-interviewer-platform" target="_blank" rel="noopener">AI Digital Interviewer</a></p>
+          <p class="desc">An agent that runs mock interviews. It plans follow up questions by calling typed tools through an MCP server, while a separate grader agent scores only the transcript.</p>
+          <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">MCP</span><span class="tag">SSE</span><span class="tag">Ollama</span></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="edu-h">
+    <h2 id="edu-h">education</h2>
+    <ol class="entries">
+      <li class="entry">
+        <span class="when">2026 → 2028</span>
+        <div class="what">
+          <p class="role">MS, Computer Science <span class="org">· University of Texas at Austin</span></p>
+          <p class="desc">Distributed Systems, Deep Learning, NLP, Large Language Models</p>
+        </div>
+      </li>
+      <li class="entry">
+        <span class="when">2024 → 2025</span>
+        <div class="what">
+          <p class="role">BS, Data Science and Statistics <span class="org">· University of Michigan</span></p>
+          <p class="desc">Database Systems, Data Structures and Algorithms, Machine Learning, Web Application Development</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="off-h">
+    <h2 id="off-h">off the clock</h2>
+    <ul class="hobbies">
+      <li><span aria-hidden="true">⛺</span> backpacking</li>
+      <li><span aria-hidden="true">🏀</span> basketball</li>
+      <li><span aria-hidden="true">🏋️</span> working out</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Yide Hao · Austin, TX</span>
+    <span><a href="https://github.com/Yidehao" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/yide-hao-307414247/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email');
+  var note = document.getElementById('copied');
+  var addr = 'yh27357@eid.utexas.edu';
+  function done() { note.hidden = false; setTimeout(function () { note.hidden = true; }, 1600); }
+  function selectText() {
+    var r = document.createRange(); r.selectNodeContents(btn);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btn.addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(addr).then(done, selectText);
+    } else { selectText(); }
+  });
+})();
+</script>
+</body>
+</html>
